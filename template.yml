@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda test
+
+Globals:
+  Api:
+    Name: !Sub api-${AWS::StackName}
+    TracingEnabled: true
+    Cors:
+      AllowOrigin: "'*'"
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+
+Resources:
+  UserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      MemorySize: 128
+      Timeout: 360
+      FunctionName: !Sub users-${AWS::StackName}
+      Description: !Sub users
+      CodeUri: modules/users
+      Handler: app.lambda_handler
+      Events:
+        getUser:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: get
