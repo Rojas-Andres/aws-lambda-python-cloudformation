@@ -35,3 +35,8 @@ Resources:
           Properties:
             Path: /users
             Method: get
+        createUser:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: post
