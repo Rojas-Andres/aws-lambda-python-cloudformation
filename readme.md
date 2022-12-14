@@ -27,6 +27,11 @@ sam build --use-container
 
 sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
 
+# Repository 
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
+
+# start api
+https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html
 
 # Docker
 
@@ -37,3 +42,6 @@ sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
 - docker tag dependencies-project:latest public.ecr.aws/r3y2i1c7/dependencies_docker
 
 - docker push public.ecr.aws/r3y2i1c7/dependencies_docker
+
+# Correr proyecto local
+sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker
