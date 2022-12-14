@@ -1,6 +1,7 @@
 from config.config import Settings
 from sqlalchemy import create_engine
 import sqlalchemy
+from sqlalchemy.orm import Session
 
 
 class DataBase:
@@ -16,3 +17,20 @@ class DataBase:
         query = sqlalchemy.select([self.user])
         result = self.connection.execute(query)
         return result.fetchall()
+
+    def create_user(self, user=dict):
+        session = Session(self.engine, future=True)
+        query = (
+            self.user.insert()
+            .values(user)
+            .returning(
+                self.user.c.id,
+                self.user.c.nombre,
+                self.user.c.apellido,
+                self.user.c.ciudad,
+            )
+        )
+        result = session.execute(query)
+        session.commit()
+        session.close()
+        return dict(result.fetchone())

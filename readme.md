@@ -2,14 +2,14 @@
 
 ## SAM CLI
 
-https://docs.amazonaws.cn/en_us/serverless-application-model/latest/developerguide/install-sam-cli.html
+- https://docs.amazonaws.cn/en_us/serverless-application-model/latest/developerguide/install-sam-cli.html
 
 #### Windows
 
-https://github.com/aws/aws-sam-cli/releases/latest/download/AWS_SAM_CLI_64_PY3.msi
+- https://github.com/aws/aws-sam-cli/releases/latest/download/AWS_SAM_CLI_64_PY3.msi
 
 # AWS CLI
-https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+- https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 #### WINDOWS
 
@@ -19,13 +19,15 @@ https://awscli.amazonaws.com/AWSCLIV2.msi
 
 
 # First
-sam deploy --guided --profile YOUR_PROFILE
+- sam deploy --guided --profile YOUR_PROFILE
 
 # DEPLOY
 
-sam build --use-container
+- sam build --use-container
 
-sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
+- sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
+# Sam build default
+https://gallery.ecr.aws/sam/build-python3.9
 
 # Repository 
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
@@ -44,4 +46,4 @@ https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerg
 - docker push public.ecr.aws/r3y2i1c7/dependencies_docker
 
 # Correr proyecto local
-sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker
+- sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker
