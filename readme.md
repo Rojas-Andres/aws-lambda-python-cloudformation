@@ -31,6 +31,9 @@ sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
 # Docker
 
 aws ecr-public get-login-password --region us-east-1 --profile user_test | docker login --username AWS --password-stdin public.ecr.aws
+
 docker build -t dependencies-project .
+
 docker tag dependencies-project:latest public.ecr.aws/r3y2i1c7/dependencies_docker
+
 docker push public.ecr.aws/r3y2i1c7/dependencies_docker
