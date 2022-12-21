@@ -67,3 +67,17 @@ Resources:
           Properties:
             Path: /users/{id}
             Method: any
+  
+  AuthorizerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub authorizer-table
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
