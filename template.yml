@@ -4,7 +4,7 @@ Description: Lambda test
 
 Parameters:
   DataBaseDB:
-    Description: Database Database
+    Description: Database DB
     Type: AWS::SSM::Parameter::Value<String>
     Default: DataBaseDB
   DataBaseHost:
