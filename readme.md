@@ -48,3 +48,6 @@ https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerg
 
 # Correr proyecto local
 - sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker
+# Correr con parametros 
+ sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker --parameter-overrides $(cat .sam-params)
+ 
