@@ -2,6 +2,28 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Lambda test
 
+Parameters:
+  DataBaseDB:
+    Description: Database Database
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DataBaseDB
+  DataBaseHost:
+    Description: Host Database
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DataBaseHost
+  DataBasePassword:
+    Description: Password Database
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DataBasePassword
+  DataBasePort:
+    Description: Port Database
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DataBasePort
+  DataBaseUser:
+    Description: User Database
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DataBaseUser
+
 Globals:
   Api:
     Name: !Sub api-${AWS::StackName}
@@ -24,11 +46,11 @@ Resources:
       Handler: app.lambda_handler
       Environment:
         Variables:
-          POSTGRES_HOST: "database-1.clqf4hnirkkf.us-east-1.rds.amazonaws.com"
-          POSTGRES_USER: "postgres"
-          POSTGRES_DB: "postgres"
-          POSTGRES_PASSWORD: "postgres"
-          POSTGRES_PORT: 5432
+          POSTGRES_HOST: !Ref DataBaseHost
+          POSTGRES_USER: !Ref DataBaseUser
+          POSTGRES_DB: !Ref DataBaseDB
+          POSTGRES_PASSWORD: !Ref DataBasePassword
+          POSTGRES_PORT: !Ref DataBasePort
       Events:
         getUser:
           Type: Api
@@ -40,3 +62,8 @@ Resources:
           Properties:
             Path: /users
             Method: post
+        UserById:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: any
