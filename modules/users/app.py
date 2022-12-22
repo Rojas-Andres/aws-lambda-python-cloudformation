@@ -1,7 +1,8 @@
 import json
 import os
 from lib_users.database import DataBase
-from lib_users.schemas import User, UpdateUser
+from lib_users.schemas import User, UpdateUser, Login
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def lambda_handler(event, context):
@@ -17,6 +18,7 @@ def lambda_handler(event, context):
         elif event.get("path") == "/users" and event.get("httpMethod") == "POST":
             body = json.loads(event.get("body"))
             user = User(**body).dict()
+            user["password"] = generate_password_hash(user["password"], method="sha256")
             user = db.create_user(user)
             data = {"user": user}
         elif "/users/" in event.get("path") and event.get("httpMethod") == "PATCH":
@@ -43,6 +45,15 @@ def lambda_handler(event, context):
             if not user:
                 raise Exception("User not found")
             data = {"user": dict(user)}
+        elif event.get("path") == "/login" and event.get("httpMethod") == "POST":
+            body = json.loads(event.get("body"))
+            user = Login(**body).dict()
+            user_db = db.get_user_by_email(user["email"])
+            if not user_db:
+                raise Exception("User not found")
+            if not check_password_hash(user_db["password"], user["password"]):
+                raise Exception("Incorrect password")
+            data = {"user": user}
     except Exception as e:
         data = {"message": str(e)}
         status_code = 400

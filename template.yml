@@ -67,7 +67,11 @@ Resources:
           Properties:
             Path: /users/{id}
             Method: any
-  
+        Login:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: post
   AuthorizerTable:
     Type: AWS::DynamoDB::Table
     Properties:
