@@ -3,7 +3,9 @@ import os
 from lib_users.database import DataBase
 from lib_users.schemas import User, UpdateUser, Login
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from lib_users.utils import create_token
+import uuid
+from lib_users.dynamo import Dynamo
 
 def lambda_handler(event, context):
     print("Received event: ", event)
@@ -53,7 +55,15 @@ def lambda_handler(event, context):
                 raise Exception("User not found")
             if not check_password_hash(user_db["password"], user["password"]):
                 raise Exception("Incorrect password")
-            data = {"user": user}
+            payload = {
+                "user_id": user_db.get("id"),
+                "id": str(uuid.uuid1())
+            }
+            token = create_token(payload)
+            payload["token"] = token
+            dynamo = Dynamo()
+            dynamo.put_item_dynamo_table(payload)
+            data = {"user": user,"token": token}
     except Exception as e:
         data = {"message": str(e)}
         status_code = 400

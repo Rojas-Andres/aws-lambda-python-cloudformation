@@ -2,3 +2,5 @@ psycopg2-binary==2.8.6
 SQLAlchemy==1.4.36
 pydantic==1.8.2
 werkzeug==0.16.1
+boto3==1.24.91
+PyJWT==2.3.0

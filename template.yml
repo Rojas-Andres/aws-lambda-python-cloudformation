@@ -23,7 +23,23 @@ Parameters:
     Description: User Database
     Type: AWS::SSM::Parameter::Value<String>
     Default: DataBaseUser
-
+  AwsAccessKeyId:
+    Description: Aws Access Key Id
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: AwsAccessKeyId
+  AwsSecretAccessKey:
+    Description: Aws secret access key
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: AwsSecretAccessKey
+  SecretKey:
+    Description: Secret Key
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: SecretKey
+  AwsRegion:
+    Description: Aws Region
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: AwsRegion
+  
 Globals:
   Api:
     Name: !Sub api-${AWS::StackName}
@@ -51,6 +67,11 @@ Resources:
           POSTGRES_DB: !Ref DataBaseDB
           POSTGRES_PASSWORD: !Ref DataBasePassword
           POSTGRES_PORT: !Ref DataBasePort
+          AWS_ACCESS_KEY_ID: !Ref AwsAccessKeyId
+          AWS_SECRET_ACCESS_KEY: !Ref AwsSecretAccessKey
+          SECRET_KEY: !Ref SecretKey
+          DYNAMODB_TABLE: !Sub authorizer-table
+          AWS_REGION: !Ref AwsRegion
       Events:
         getUser:
           Type: Api
