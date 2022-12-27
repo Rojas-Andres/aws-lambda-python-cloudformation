@@ -27,6 +27,8 @@ https://awscli.amazonaws.com/AWSCLIV2.msi
 
 - sam deploy --profile YOUR_PROFILE --config-env YOUR_ENV
 
+- sam deploy --profile user_test --config-env develop
+
 # Sam build default
 https://gallery.ecr.aws/sam/build-python3.9
 
