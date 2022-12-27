@@ -1,5 +1,6 @@
 import os
 import boto3
+from boto3.dynamodb.conditions import Attr
 
 class Dynamo:
     def __init__(self):
@@ -11,6 +12,8 @@ class Dynamo:
         )
         self.table = self.dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     
-    def put_item_dynamo_table(self, item):
-        response = self.table.put_item(Item=item)
-        return response
+    def get_item_by_token(self, token):
+        response = self.table.scan(
+            FilterExpression=Attr('token').eq(token)
+        )
+        return response['Items'][0] if response['Items'] else None

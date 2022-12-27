@@ -23,22 +23,22 @@ Parameters:
     Description: User Database
     Type: AWS::SSM::Parameter::Value<String>
     Default: DataBaseUser
-  AwsAccessKeyId:
+  AccessKeyId:
     Description: Aws Access Key Id
     Type: AWS::SSM::Parameter::Value<String>
-    Default: AwsAccessKeyId
-  AwsSecretAccessKey:
+    Default: AccessKeyId
+  SecretAccessKey:
     Description: Aws secret access key
     Type: AWS::SSM::Parameter::Value<String>
-    Default: AwsSecretAccessKey
+    Default: SecretAccessKey
   SecretKey:
     Description: Secret Key
     Type: AWS::SSM::Parameter::Value<String>
     Default: SecretKey
-  AwsRegion:
+  Region:
     Description: Aws Region
     Type: AWS::SSM::Parameter::Value<String>
-    Default: AwsRegion
+    Default: Region
   
 Globals:
   Api:
@@ -48,8 +48,30 @@ Globals:
       AllowOrigin: "'*'"
       AllowMethods: "'*'"
       AllowHeaders: "'*'"
-
+    Auth:
+      DefaultAuthorizer: LambdaAuthorizer
+      AddDefaultAuthorizerToCorsPreflight: false
+      Authorizers:
+        LambdaAuthorizer:
+          FunctionArn: !GetAtt AuthorizerFunction.Arn
 Resources:
+  AuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      MemorySize: 128
+      Timeout: 360
+      FunctionName: !Sub authorizer-${AWS::StackName}
+      Description: !Sub authorizer
+      CodeUri: modules/authorizer
+      Handler: app.lambda_handler
+      Environment:
+        Variables:
+          ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
+          ENV_AWS_SECRET_ACCESS_KEY: !Ref SecretAccessKey
+          SECRET_KEY: !Ref SecretKey
+          DYNAMODB_TABLE: !Sub authorizer-table
+          ENV_AWS_REGION: !Ref Region
   UserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -67,11 +89,11 @@ Resources:
           POSTGRES_DB: !Ref DataBaseDB
           POSTGRES_PASSWORD: !Ref DataBasePassword
           POSTGRES_PORT: !Ref DataBasePort
-          AWS_ACCESS_KEY_ID: !Ref AwsAccessKeyId
-          AWS_SECRET_ACCESS_KEY: !Ref AwsSecretAccessKey
+          ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
+          ENV_AWS_SECRET_ACCESS_KEY: !Ref SecretAccessKey
           SECRET_KEY: !Ref SecretKey
           DYNAMODB_TABLE: !Sub authorizer-table
-          AWS_REGION: !Ref AwsRegion
+          ENV_AWS_REGION: !Ref Region
       Events:
         getUser:
           Type: Api
@@ -83,6 +105,8 @@ Resources:
           Properties:
             Path: /users
             Method: post
+            Auth:
+              Authorizer: NONE
         UserById:
           Type: Api
           Properties:
@@ -93,6 +117,8 @@ Resources:
           Properties:
             Path: /login
             Method: post
+            Auth:
+              Authorizer: NONE
   AuthorizerTable:
     Type: AWS::DynamoDB::Table
     Properties:
