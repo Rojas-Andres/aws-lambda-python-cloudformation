@@ -1,6 +1,8 @@
 import json
 import sendgrid
 from sendgrid.helpers.mail import Mail
+import os
+
 
 def send_email_create_user(payload):
     sengrid_api_key = os.environ.get("SENDGRID_API_KEY")
