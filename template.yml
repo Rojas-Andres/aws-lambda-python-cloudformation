@@ -39,7 +39,15 @@ Parameters:
     Description: Aws Region
     Type: AWS::SSM::Parameter::Value<String>
     Default: Region
-  
+  SendgridApiKey:
+    Description: Sendgrid api key
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: SendgridApiKey
+  FromEmail:
+    Description: From email sendgrid
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: FromEmail
+    
 Globals:
   Api:
     Name: !Sub api-${AWS::StackName}
@@ -55,6 +63,31 @@ Globals:
         LambdaAuthorizer:
           FunctionArn: !GetAtt AuthorizerFunction.Arn
 Resources:
+  NotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      MemorySize: 128
+      Timeout: 360
+      FunctionName: !Sub notification-${AWS::StackName}
+      Description: !Sub notification
+      CodeUri: modules/notification
+      Handler: app.lambda_handler
+      Environment:
+        Variables:
+          SENDGRID_API_KEY: !Ref SendgridApiKey
+          FROM_EMAIL: !Ref FromEmail
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt SqsQueueNotification.Arn
+            BatchSize: 5
+  SqsQueueNotification:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub notification-sqs-${AWS::StackName}
+      VisibilityTimeout: 360
   AuthorizerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -94,6 +127,7 @@ Resources:
           SECRET_KEY: !Ref SecretKey
           DYNAMODB_TABLE: !Sub authorizer-table
           ENV_AWS_REGION: !Ref Region
+          SQS_URL: !Ref SqsQueueNotification
       Events:
         getUser:
           Type: Api

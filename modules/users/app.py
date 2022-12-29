@@ -3,7 +3,7 @@ import os
 from lib_users.database import DataBase
 from lib_users.schemas import User, UpdateUser, Login
 from werkzeug.security import generate_password_hash, check_password_hash
-from lib_users.utils import create_token
+from lib_users.utils import create_token, SQS_send
 import uuid
 from lib_users.dynamo import Dynamo
 
@@ -22,6 +22,12 @@ def lambda_handler(event, context):
             user = User(**body).dict()
             user["password"] = generate_password_hash(user["password"], method="sha256")
             user = db.create_user(user)
+            payload_message = {
+                "email": user.get("email"),
+                "type": "create_user",
+                "name": user.get("name"),
+            }
+            SQS_send(json.dumps(payload_message))
             data = {"user": user}
         elif "/users/" in event.get("path") and event.get("httpMethod") == "PATCH":
             id = event.get("pathParameters").get("id")
