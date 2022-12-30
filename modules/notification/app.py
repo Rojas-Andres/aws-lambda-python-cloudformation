@@ -25,7 +25,13 @@ def send_email_create_user(payload):
 def lambda_handler(event, context):
     print("Received event: ", event)
     print("Context: ", context)
-    for record in event['Records']:
-        payload = json.loads(record['body'])
-        if payload.get("type") == "create_user":
-            send_email_create_user(payload)
+    if event.get('Records'):
+        for record in event['Records']:
+            payload = json.loads(record['body'])
+            if payload.get("type") == "create_user":
+                send_email_create_user(payload)
+    elif event.get("resources"):
+        if "user_created_today" in event.get("resources")[0]:
+            pass
+    else:
+        return None

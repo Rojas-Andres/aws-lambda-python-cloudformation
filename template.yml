@@ -88,6 +88,32 @@ Resources:
     Properties:
       QueueName: !Sub notification-sqs-${AWS::StackName}
       VisibilityTimeout: 360
+
+  UsersCreatedToday:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Usuarios creados hoy"
+      Name: !Sub user_created_today-${AWS::StackName}
+      State: ENABLED
+      ScheduleExpression: "cron(59 23 * * ? *)"
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "NotificationFunction"
+              - "Arn"
+          Id: "idusercreatedtodayeventrule"
+
+  PermissionInvokeUserCreated:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref "NotificationFunction"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn:
+        Fn::GetAtt:
+          - "UsersCreatedToday"
+          - "Arn"
+
   AuthorizerFunction:
     Type: AWS::Serverless::Function
     Properties:
