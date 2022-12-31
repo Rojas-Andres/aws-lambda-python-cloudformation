@@ -15,7 +15,7 @@ class DataBase:
             "users", self.metadata, autoload=True, autoload_with=self.engine
         )
     
-    def get_user_create_today(self):
+    def get_users_created_today(self):
         df = pd.read_sql(Query().get_users_create_today(), self.connection)
         with io.BytesIO() as output:
             with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
