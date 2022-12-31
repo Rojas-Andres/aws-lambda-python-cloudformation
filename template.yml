@@ -39,6 +39,10 @@ Parameters:
     Description: Aws Region
     Type: AWS::SSM::Parameter::Value<String>
     Default: Region
+  Bucket:
+    Description: Aws bucket s3
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: Bucket
   SendgridApiKey:
     Description: Sendgrid api key
     Type: AWS::SSM::Parameter::Value<String>
@@ -77,6 +81,15 @@ Resources:
         Variables:
           SENDGRID_API_KEY: !Ref SendgridApiKey
           FROM_EMAIL: !Ref FromEmail
+          POSTGRES_HOST: !Ref DataBaseHost
+          POSTGRES_USER: !Ref DataBaseUser
+          POSTGRES_DB: !Ref DataBaseDB
+          POSTGRES_PASSWORD: !Ref DataBasePassword
+          POSTGRES_PORT: !Ref DataBasePort
+          ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
+          ENV_AWS_SECRET_ACCESS_KEY: !Ref SecretAccessKey
+          ENV_AWS_S3_BUCKET_NAME: !Ref Bucket
+          ENV_AWS_REGION: !Ref Region
       Events:
         SQSEvent:
           Type: SQS
@@ -131,6 +144,7 @@ Resources:
           SECRET_KEY: !Ref SecretKey
           DYNAMODB_TABLE: !Sub authorizer-table
           ENV_AWS_REGION: !Ref Region
+
   UserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -150,10 +164,11 @@ Resources:
           POSTGRES_PORT: !Ref DataBasePort
           ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
           ENV_AWS_SECRET_ACCESS_KEY: !Ref SecretAccessKey
-          SECRET_KEY: !Ref SecretKey
-          DYNAMODB_TABLE: !Sub authorizer-table
+          ENV_AWS_S3_BUCKET_NAME: !Ref Bucket
           ENV_AWS_REGION: !Ref Region
+          SECRET_KEY: !Ref SecretKey
           SQS_URL: !Ref SqsQueueNotification
+          DYNAMODB_TABLE: !Sub authorizer-table
       Events:
         getUser:
           Type: Api
@@ -177,6 +192,13 @@ Resources:
           Properties:
             Path: /login
             Method: post
+            Auth:
+              Authorizer: NONE
+        TestApi:
+          Type: Api
+          Properties:
+            Path: /testApi
+            Method: get
             Auth:
               Authorizer: NONE
   AuthorizerTable:

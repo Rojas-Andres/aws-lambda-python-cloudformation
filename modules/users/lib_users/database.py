@@ -2,6 +2,9 @@ from lib_users.config import Settings
 from sqlalchemy import create_engine
 import sqlalchemy
 from sqlalchemy.orm import Session
+import pandas as pd
+from lib_users.querys import Query
+import io
 
 
 class DataBase:
@@ -71,3 +74,11 @@ class DataBase:
         query = sqlalchemy.select([self.user]).where(self.user.c.email == email)
         result = self.connection.execute(query).fetchone()
         return dict(result) if result else None
+    
+    def get_user_create_today(self):
+        df = pd.read_sql(Query().get_users_create_today(), self.connection)
+        with io.BytesIO() as output:
+            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                df.to_excel(writer, sheet_name='Sheet1', index=False)
+            data = output.getvalue()
+        return data

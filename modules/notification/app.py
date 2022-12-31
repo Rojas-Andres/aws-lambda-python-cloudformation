@@ -2,6 +2,8 @@ import json
 import sendgrid
 from sendgrid.helpers.mail import Mail
 import os
+from lib_database.database import DataBase
+from lib_database.utils import upload_file
 
 
 def send_email_create_user(payload):
@@ -32,6 +34,9 @@ def lambda_handler(event, context):
                 send_email_create_user(payload)
     elif event.get("resources"):
         if "user_created_today" in event.get("resources")[0]:
-            pass
+            db = DataBase()
+            data = db.get_users_created_today()
+            url_file = upload_file("user_created_today", "xlsx" ,data)
+            print(url_file)
     else:
         return None

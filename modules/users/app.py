@@ -3,7 +3,7 @@ import os
 from lib_users.database import DataBase
 from lib_users.schemas import User, UpdateUser, Login
 from werkzeug.security import generate_password_hash, check_password_hash
-from lib_users.utils import create_token, SQS_send
+from lib_users.utils import create_token, SQS_send, upload_file
 import uuid
 from lib_users.dynamo import Dynamo
 
@@ -70,6 +70,10 @@ def lambda_handler(event, context):
             dynamo = Dynamo()
             dynamo.put_item_dynamo_table(payload)
             data = {"user": user,"token": token}
+        elif event.get("path") == "/testApi":
+            data = db.get_user_create_today()
+            upload_file("user_created_today", "xlsx" ,data)
+            data = {"message": "testapi"}
     except Exception as e:
         data = {"message": str(e)}
         status_code = 400
