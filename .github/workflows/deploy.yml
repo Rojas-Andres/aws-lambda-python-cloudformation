@@ -40,7 +40,7 @@ jobs:
         run: |
           sam deploy --stack-name ${STACK_NAME} \
             --capabilities CAPABILITY_IAM \
-            --region ${AWS_SECRET_REGION} \
+            --region ${AWS_REGION_MASTER} \
             --s3-bucket ${MASTER_ARTIFACTS_BUCKET} \
             --no-fail-on-empty-changeset \
             --role-arn ${MASTER_CLOUDFORMATION_EXECUTION_ROLE}
