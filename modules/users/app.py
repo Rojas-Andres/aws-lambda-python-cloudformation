@@ -2,7 +2,6 @@ import json
 from lib_users.database import DataBase
 from lib_users.schemas import User, UpdateUser, Login
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
 from lib_users.utils import create_token, SQS_send, upload_file
 import uuid
 from lib_users.dynamo import Dynamo
