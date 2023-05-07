@@ -3,19 +3,19 @@ name: Pipeline
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
   env:
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_SECRET_REGION: ${{ secrets.AWS_SECRET_REGION }}
     SAM_TEMPLATE: template.yaml
     STACK_NAME: test-app
-    MAIN_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::535336137761:role/aws-sam-cli-managed-devel-CloudFormationExecutionR-172CRHYD0SHET
-    MAIN_ARTIFACTS_BUCKET: aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog
+    MASTER_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::535336137761:role/aws-sam-cli-managed-devel-CloudFormationExecutionR-172CRHYD0SHET
+    MASTER_ARTIFACTS_BUCKET: aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog
 jobs:
-  build-deploy-main:
-    name: Deploy to main stack
-    if: github.ref == 'refs/heads/main'
+  build-deploy-master:
+    name: Deploy to master stack
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
           aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_SECRET_REGION }}
-          role-to-assume: ${{ env.MAIN_CLOUDFORMATION_EXECUTION_ROLE }}
+          role-to-assume: ${{ env.MASTER_CLOUDFORMATION_EXECUTION_ROLE }}
           role-session-name: feature-deployment
           role-duration-seconds: 3600
           role-skip-session-tagging: true
@@ -39,6 +39,6 @@ jobs:
           sam deploy --stack-name ${STACK_NAME} \
             --capabilities CAPABILITY_IAM \
             --region ${AWS_SECRET_REGION} \
-            --s3-bucket ${MAIN_ARTIFACTS_BUCKET} \
+            --s3-bucket ${MASTER_ARTIFACTS_BUCKET} \
             --no-fail-on-empty-changeset \
-            --role-arn ${MAIN_CLOUDFORMATION_EXECUTION_ROLE}
+            --role-arn ${MASTER_CLOUDFORMATION_EXECUTION_ROLE}
