@@ -1,5 +1,4 @@
 import json
-import os
 from lib_users.database import DataBase
 from lib_users.schemas import User, UpdateUser, Login
 from werkzeug.security import generate_password_hash, check_password_hash
