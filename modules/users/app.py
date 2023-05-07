@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from lib_users.utils import create_token, SQS_send, upload_file
 import uuid
 from lib_users.dynamo import Dynamo
-
+import os 
 def lambda_handler(event, context):
     print("Received event: ", event)
     print("Context: ", context)
