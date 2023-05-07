@@ -204,7 +204,7 @@ Resources:
   AuthorizerTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub authorizer-table-app
+      TableName: !Sub authorizer-${AWS::StackName}
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
