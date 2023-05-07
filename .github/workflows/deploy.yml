@@ -35,7 +35,7 @@ jobs:
           role-session-name: feature-deployment
           role-duration-seconds: 3600
           role-skip-session-tagging: true
-      - name: Deploy to feature stack in the testing account
+      - name: Deploy to master stack
         shell: bash
         run: |
           sam deploy --stack-name ${STACK_NAME} \
