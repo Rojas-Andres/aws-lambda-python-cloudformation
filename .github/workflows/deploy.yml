@@ -4,14 +4,16 @@ on:
   push:
     branches:
       - 'master'
-  env:
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    AWS_SECRET_REGION: ${{ secrets.AWS_SECRET_REGION }}
-    SAM_TEMPLATE: template.yaml
-    STACK_NAME: test-app
-    MASTER_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::535336137761:role/aws-sam-cli-managed-devel-CloudFormationExecutionR-172CRHYD0SHET
-    MASTER_ARTIFACTS_BUCKET: aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_SECRET_REGION: ${{ secrets.AWS_SECRET_REGION }}
+  SAM_TEMPLATE: template.yaml
+  STACK_NAME: test-app
+  MASTER_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::535336137761:role/aws-sam-cli-managed-devel-CloudFormationExecutionR-172CRHYD0SHET
+  MASTER_ARTIFACTS_BUCKET: aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog
+
 jobs:
   build-deploy-master:
     name: Deploy to master stack
