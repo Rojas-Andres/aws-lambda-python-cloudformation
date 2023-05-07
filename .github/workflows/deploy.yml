@@ -11,7 +11,7 @@ env:
   AWS_REGION_MASTER: us-east-1
   SAM_TEMPLATE: template.yml
   STACK_NAME: test-app
-  MASTER_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::535336137761:role/aws-sam-cli-managed-devel-CloudFormationExecutionR-172CRHYD0SHET
+  MASTER_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::801515440557:role/aws-cli-deployment
   MASTER_ARTIFACTS_BUCKET: aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog
 
 jobs:
