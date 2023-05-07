@@ -142,7 +142,7 @@ Resources:
           ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
           ENV_AWS_SECRET_ACCESS_KEY: !Ref SecretAccessKey
           SECRET_KEY: !Ref SecretKey
-          DYNAMODB_TABLE: !Sub authorizer-table
+          DYNAMODB_TABLE: !Sub authorizer-${AWS::StackName}
           ENV_AWS_REGION: !Ref Region
 
   UserFunction:
@@ -168,7 +168,7 @@ Resources:
           ENV_AWS_REGION: !Ref Region
           SECRET_KEY: !Ref SecretKey
           SQS_URL: !Ref SqsQueueNotification
-          DYNAMODB_TABLE: !Sub authorizer-table
+          DYNAMODB_TABLE: !Sub authorizer-${AWS::StackName}
       Events:
         getUser:
           Type: Api
@@ -204,7 +204,7 @@ Resources:
   AuthorizerTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub authorizer-table
+      TableName: !Sub authorizer-table-app
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S

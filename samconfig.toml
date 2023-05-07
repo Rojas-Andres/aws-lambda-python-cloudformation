@@ -1,0 +1,12 @@
+version = 0.1
+[develop]
+[develop.deploy]
+[develop.deploy.parameters]
+stack_name = "test-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-4d862kfo5zog"
+s3_prefix = "test-app"
+region = "us-east-1"
+profile = "user_test"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "DataBaseDB=\"DataBaseDB\" DataBaseHost=\"DataBaseHost\" DataBasePassword=\"DataBasePassword\" DataBasePort=\"DataBasePort\" DataBaseUser=\"DataBaseUser\" AccessKeyId=\"AccessKeyId\" SecretAccessKey=\"SecretAccessKey\" SecretKey=\"SecretKey\" Region=\"Region\" Bucket=\"Bucket\" SendgridApiKey=\"SendgridApiKey\" FromEmail=\"FromEmail\""
+image_repositories = []

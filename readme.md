@@ -52,4 +52,13 @@ https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerg
 - sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker
 # Correr con parametros 
  sam local start-api --invoke-image public.ecr.aws/r3y2i1c7/dependencies_docker --parameter-overrides $(cat .sam-params)
- 
+
+
+# Crear tabla usuarios
+
+create table users(
+	id serial,
+	nombre varchar(250),
+	apellido varchar(250),
+	ciudad varchar(250)
+)
