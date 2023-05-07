@@ -1,5 +1,6 @@
 .sam-params
 .aws-sam
+samconfig.toml_test
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

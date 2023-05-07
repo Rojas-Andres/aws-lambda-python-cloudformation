@@ -58,7 +58,9 @@ https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerg
 
 create table users(
 	id serial,
-	nombre varchar(250),
-	apellido varchar(250),
-	ciudad varchar(250)
+	"name" varchar(250),
+	last_name varchar(250),
+	city varchar(250),
+	"password" varchar(250),
+	email varchar(250)
 )

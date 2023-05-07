@@ -28,9 +28,11 @@ class DataBase:
             .values(user)
             .returning(
                 self.user.c.id,
-                self.user.c.nombre,
-                self.user.c.apellido,
-                self.user.c.ciudad,
+                self.user.c.name,
+                self.user.c.last_name,
+                self.user.c.city,
+                self.user.c.email,
+                self.user.c.password,
             )
         )
         result = session.execute(query)
@@ -51,9 +53,9 @@ class DataBase:
             .values(user)
             .returning(
                 self.user.c.id,
-                self.user.c.nombre,
-                self.user.c.apellido,
-                self.user.c.ciudad,
+                self.user.c.name,
+                self.user.c.last_name,
+                self.user.c.city,
             )
         )
         result = session.execute(query)
