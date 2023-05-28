@@ -67,6 +67,16 @@ Globals:
         LambdaAuthorizer:
           FunctionArn: !GetAtt AuthorizerFunction.Arn
 Resources:
+
+  LayerDependencies:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub layer-dependencies-${AWS::StackName}
+      Description: Libraries python dependencies basic
+      ContentUri: ./layer_dependencies_basic/layer_dependencies_basic.zip
+      CompatibleRuntimes:
+        - python3.9
+  
   NotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -77,6 +87,8 @@ Resources:
       Description: !Sub notification
       CodeUri: modules/notification
       Handler: app.lambda_handler
+      Layers:
+        - !Ref LayerDependencies
       Environment:
         Variables:
           SENDGRID_API_KEY: !Ref SendgridApiKey
@@ -137,6 +149,8 @@ Resources:
       Description: !Sub authorizer
       CodeUri: modules/authorizer
       Handler: app.lambda_handler
+      Layers:
+        - !Ref LayerDependencies
       Environment:
         Variables:
           ENV_AWS_ACCESS_KEY_ID: !Ref AccessKeyId
@@ -154,6 +168,8 @@ Resources:
       FunctionName: !Sub users-${AWS::StackName}
       Description: !Sub users
       CodeUri: modules/users
+      Layers:
+        - !Ref LayerDependencies
       Handler: app.lambda_handler
       Environment:
         Variables:

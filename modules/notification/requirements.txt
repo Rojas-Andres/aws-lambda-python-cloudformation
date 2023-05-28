@@ -1,6 +1,0 @@
-psycopg2-binary==2.8.6
-SQLAlchemy==1.4.36
-sendgrid==6.8.1
-pandas==1.3.3
-xlsxwriter==3.0.3
-boto3==1.24.91

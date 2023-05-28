@@ -24,6 +24,15 @@ jobs:
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
+      - name: Install dependencies layer
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r layer_dependencies_basic/requirements.txt -t layer_dependencies_basic/python
+      - name: Package layer 
+        run: |
+          cd layer_dependencies_basic
+          zip -r layer_dependencies_basic.zip python
+          cd ..
       - run: sam build --template ${SAM_TEMPLATE} --use-container
       - name: Assume the testing pipeline user role
         uses: aws-actions/configure-aws-credentials@v1-node16

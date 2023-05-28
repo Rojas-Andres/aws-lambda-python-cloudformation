@@ -1,3 +1,6 @@
+
+layer_dependencies_basic/python
+layer_dependencies_basic/layer_dependencies_basic.zip
 .sam-params
 .aws-sam
 samconfig.toml_test
